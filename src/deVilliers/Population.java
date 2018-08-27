@@ -31,11 +31,11 @@ public class Population
     ArrayList<input> populationInput;
     ArrayList<OrganismsLife> population = new ArrayList<>();
 
-    public Population() {
+    public Population(int populationSize) {
         readCSV rcsv = new readCSV();
         populationInput = rcsv.readfile("TrainingSet.csv");
         Long begin = System.currentTimeMillis();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < populationSize; i++)
         {
             OrganismsLife life = new OrganismsLife(populationInput.get(0), i, populationInput.size());
 
