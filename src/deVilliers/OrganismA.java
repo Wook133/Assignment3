@@ -27,7 +27,7 @@ public class OrganismA
         Beta                = new Double[ilength];
         for (int i = 0; i <= Beta.length - 1; i++)
         {
-            Beta[i] = uniformRandomNumber(2500.00);
+            Beta[i] = uniformRandomNumber(2500.0);
         }
     }
 

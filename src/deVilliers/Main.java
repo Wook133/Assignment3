@@ -16,10 +16,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Population model1 = new Population();
+        int igen = 1;
 
-        for (int i = 1; i <= 5000; i ++) {
+        while (model1.population.get(0).rsquared < 0.99)
+        {
             model1.Evolve();
+            igen = igen + 1;
         }
+        System.out.println("Best after " + igen + " generations");
+        model1.population.get(0).creature.printBeta();
+
 
     }
 

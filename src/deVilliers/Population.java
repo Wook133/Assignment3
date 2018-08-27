@@ -35,7 +35,7 @@ public class Population
         readCSV rcsv = new readCSV();
         populationInput = rcsv.readfile("TrainingSet.csv");
         Long begin = System.currentTimeMillis();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
             OrganismsLife life = new OrganismsLife(populationInput.get(0), i, populationInput.size());
 
@@ -49,18 +49,6 @@ public class Population
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
         System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" +  "time = " + (end-begin) + " ms");
-        /*System.out.println("Size = " + population.size());
-        System.out.println("population size = " + population.size());
-        System.out.println("Time = " + (end-begin) + " ms");
-        System.out.println("Best");
-        System.out.println("R^2 = " + population.get(0).rsquared*100.0);
-        System.out.println("Worst");
-        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);*/
-       /* for (OrganismsLife cur : population)
-        {
-            System.out.println("Size = " + population.size() + "\t" + "Current: " + "R^2 = " + cur.rsquared*100.0);
-            //cur.printP();
-        }*/
     }
 
     public void Evolve()
@@ -73,36 +61,26 @@ public class Population
                 cur.Live(populationInput.get(j));
             }
         }
-       // System.out.println("Null pointer exception comes here = " + population.size());
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
         System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "time = " + (end-begin) + " ms");
-        /*System.out.println("Size = " + population.size());
-        System.out.println("Best: " + "R^2 = " + population.get(0).rsquared*100.0);
-        System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0);
-        System.out.println("time = " + (end-begin) + " ms");*/
-        /*System.out.println("Best");
-        System.out.println("R^2 = " + population.get(0).rsquared*100.0);
-        System.out.println("Worst");
-        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);*/
-        /*for (OrganismsLife cur : population)
-        {
-            System.out.println("Size = " + population.size() + "\t" + "Current: " + "R^2 = " + cur.rsquared*100.0);
-            //cur.printP();
-        }*/
+
     }
 
-    public static ArrayList<Integer> BreedingPairs()
+    /**
+     * Select
+     * @return
+     */
+    public ArrayList<Integer> BreedingPairs()
     {
         ArrayList<Integer> numbers = new ArrayList<>();
-        for (int i = 1; i <= 80; i++) {
+        for (int i = 1; i <= (population.size()*0.8); i++) {
             int cur = (normalRandomInteger(i * 3.0) + (i % 5) + uniformPosRandomNumber(100.0).intValue()+ uniformPosRandomNumber(50.0).intValue() +40) % 100;
-            //int cur = normalRandomInteger(100.0).intValue();
             numbers.add(cur);
         }
 
-        for (int i = 0; i <= 11; i++)
+        for (int i = 0; i <= (population.size()*0.11); i++)
         {
             int cur = uniformPosRandomNumber(100.0).intValue();
             numbers.add(cur);
@@ -112,22 +90,19 @@ public class Population
 
     public void Breed(ArrayList<Integer> pairs)
     {
-        /*System.out.println("Pairs-Size = " + pairs.size());
-        System.out.println("Population-Size = " + population.size());*/
         ArrayList<Double> alphas = new ArrayList<>();
         ArrayList<OrganismsLife> newPopulation = new ArrayList<>();
         int n = populationInput.size();
         for (int i = 1; i < pairs.size() - 1; i += 2) {
             int ipos1 = i-1;
             int ipos2 = i;
-            double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / 400.00);
+            double denominator = 4.0 * population.size();
+            double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / denominator);
 
             if (curAlpha == 1)
             {
                 curAlpha = 0.99999999;
             }
-
-            //System.out.println(i+ ". " + pairs.get(i) + " : " + pairs.get(i+1) +" Alpha = " + curAlpha);
             alphas.add(curAlpha);
             OrganismsLife ParentA;
             OrganismsLife ParentB;
@@ -146,18 +121,18 @@ public class Population
             newPopulation.add(childA);
             newPopulation.add(childB);
         }
-        OrganismsLife childClone = BreedNoMutation(population.get(0), population.get(0), 0.0, populationInput.get(0), newPopulation.size(), n);
+        OrganismsLife childClone = BreedNoMutation(population.get(0), population.get(0), populationInput.get(0), newPopulation.size(), n);
         newPopulation.add(childClone);
-        childClone = BreedNoMutation(population.get(0), population.get(0), 0.0, populationInput.get(0), newPopulation.size(), n);
+        childClone = BreedNoMutation(population.get(0), population.get(0), populationInput.get(0), newPopulation.size(), n);
         newPopulation.add(childClone);
 
-        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size(), n);
+        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), populationInput.get(0), newPopulation.size(), n);
         newPopulation.add(childClone);
-        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size(), n);
+        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), populationInput.get(0), newPopulation.size(), n);
         newPopulation.add(childClone);
-        while (newPopulation.size() < 100)
+        while (newPopulation.size() < population.size())
         {
-            childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size(), n);
+            childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), populationInput.get(0), newPopulation.size(), n);
             newPopulation.add(childClone);
         }
         population.clear();
@@ -167,6 +142,15 @@ public class Population
         }
     }
 
+    /**
+     * @param ParentA
+     * @param ParentB
+     * @param alpha alpha-value of t to sample from
+     * @param first
+     * @param lbl
+     * @param n
+     * @return Child of Parent's A and B, this child has the best gene combination of both parents with mutation occuring on the Confidence Interval of the parent with the better Allel
+     */
     public static OrganismsLife goodBreed(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl, int n)
     {
         OrganismsLife child1;
@@ -178,7 +162,7 @@ public class Population
         TDistribution ttable = new TDistribution(dof);
         for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
             if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
-                childB1[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval                    //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+                childB1[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
             }
             else{
                 childB1[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
@@ -201,7 +185,6 @@ public class Population
         for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
             if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
                 childB2[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
-                //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
             } else {
                 childB2[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
             }
@@ -210,7 +193,16 @@ public class Population
         return child2;
     }
 
-    public static OrganismsLife BreedNoMutation(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl, int n)
+    /**
+     * When Breeding, crossover occurs but no mutation
+     * @param ParentA
+     * @param ParentB
+     * @param first
+     * @param lbl
+     * @param n
+     * @return
+     */
+    public static OrganismsLife BreedNoMutation(OrganismsLife ParentA, OrganismsLife ParentB, input first, int lbl, int n)
     {
         OrganismsLife child2;
         Double[] childB2 = new Double[ParentA.creature.getBeta().length];
