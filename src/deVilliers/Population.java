@@ -43,13 +43,14 @@ public class Population
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
-        System.out.println("Size = " + population.size());
+        System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "time = " + (end-begin) + " ms");
+        /*System.out.println("Size = " + population.size());
         System.out.println("population size = " + population.size());
         System.out.println("Time = " + (end-begin) + " ms");
         System.out.println("Best");
         System.out.println("R^2 = " + population.get(0).rsquared*100.0);
         System.out.println("Worst");
-        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);
+        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);*/
        /* for (OrganismsLife cur : population)
         {
             System.out.println("R^2 = " + cur.rsquared*100.0);
@@ -59,6 +60,7 @@ public class Population
 
     public void Evolve()
     {
+        Long begin = System.currentTimeMillis();
         Breed(BreedingPairs());
         for (int i = 0; i < population.size(); i++) {
             for (int j = 0; j < populationInput.size(); j++) {
@@ -68,11 +70,12 @@ public class Population
         }
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
-        System.out.println("Size = " + population.size());
-        System.out.println("Best");
+        Long end = System.currentTimeMillis();
+        System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "time = " + (end-begin) + " ms");
+        /*System.out.println("Best");
         System.out.println("R^2 = " + population.get(0).rsquared*100.0);
         System.out.println("Worst");
-        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);
+        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);*/
     }
 
     public static ArrayList<Integer> BreedingPairs()
@@ -98,9 +101,11 @@ public class Population
 
     public void Breed(ArrayList<Integer> pairs)
     {
+        /*System.out.println("Pairs-Size = " + pairs.size());
+        System.out.println("Population-Size = " + population.size());*/
         ArrayList<Double> alphas = new ArrayList<>();
         ArrayList<OrganismsLife> newPopulation = new ArrayList<>();
-        for (int i =1; i <= pairs.size() - 1; i=i+1) {
+        for (int i = 1; i < pairs.size() - 1; i += 2) {
             int ipos1 = i-1;
             int ipos2 = i;
             double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / 400.0);
@@ -138,16 +143,25 @@ public class Population
         newPopulation.add(childClone);
         childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size());
         newPopulation.add(childClone);
-
-        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+        while (newPopulation.size() != 100)
+        {
+            childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+            newPopulation.add(childClone);
+        }
+        /*childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
         newPopulation.add(childClone);
         childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
         newPopulation.add(childClone);
+        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
+        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);*/
         population.clear();
         for (OrganismsLife cur : newPopulation)
         {
             population.add(cur);
         }
+        System.out.println("Pop-Size = " + population.size());
     }
 
     public static OrganismsLife goodBreed(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
