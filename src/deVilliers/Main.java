@@ -16,12 +16,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Population model1 = new Population();
-        model1.Breed(model1.BreedingPairs());
+        for (int i = 1; i <= 2; i ++) {
+            model1.Evolve();
+        }
+        /*for (int i = 1; i < 100; i++) {
+            System.out.println(uniformPosRandomNumber(1.0));
+        }*/
 
-
-       TDistribution ttable = new TDistribution(1792);
+       /*TDistribution ttable = new TDistribution(1792);
        System.out.println(ttable.inverseCumulativeProbability(0.505));
-        System.out.println(ttable.inverseCumulativeProbability(0.99));
+        System.out.println(ttable.inverseCumulativeProbability(0.99));*/
         /*double dmax =  5.495228495191316;
         double dmin = -5.539589635447753;
         readCSV r = new readCSV();
@@ -152,11 +156,12 @@ public class Main {
     /**
      * @param Range [0; Range]
      * @return  pseudorandom number from a Uniform Distribution within the range
-     */
+     * */
     public static double uniformPosRandomNumber(Double Range)
     {
         double dmax =  1.7320508071499143;
-        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(8));
+        Random r = new Random();
+        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(r.nextInt()));
         double cur = rnd.nextNormalizedDouble();
         cur = (cur/dmax) * Range;
         if (cur < 0)

@@ -43,8 +43,13 @@ public class Population
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
+        System.out.println("Size = " + population.size());
         System.out.println("population size = " + population.size());
         System.out.println("Time = " + (end-begin) + " ms");
+        System.out.println("Best");
+        System.out.println("R^2 = " + population.get(0).rsquared*100.0);
+        System.out.println("Worst");
+        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);
        /* for (OrganismsLife cur : population)
         {
             System.out.println("R^2 = " + cur.rsquared*100.0);
@@ -52,23 +57,41 @@ public class Population
         }*/
     }
 
+    public void Evolve()
+    {
+        Breed(BreedingPairs());
+        for (int i = 0; i < population.size(); i++) {
+            for (int j = 0; j < populationInput.size(); j++) {
+                OrganismsLife cur = population.get(i);
+                cur.Live(populationInput.get(j));
+            }
+        }
+        Collections.sort(population, new SortbyR());
+        Collections.reverse(population);
+        System.out.println("Size = " + population.size());
+        System.out.println("Best");
+        System.out.println("R^2 = " + population.get(0).rsquared*100.0);
+        System.out.println("Worst");
+        System.out.println("R^2 = " + population.get(population.size()-1).rsquared*100.0);
+    }
+
     public static ArrayList<Integer> BreedingPairs()
     {
         ArrayList<Integer> numbers = new ArrayList<>();
         for (int i = 1; i <= 80; i++) {
-            int cur = (normalRandomInteger(i * 3.0) + (i % 5) + (int)uniformPosRandomNumber(100.0)+ (int)uniformPosRandomNumber(50.0) +40) % 100;
+            int cur = (normalRandomInteger(i * 3.0) + (i % 5) + uniformPosRandomNumber(100.0).intValue()+ uniformPosRandomNumber(50.0).intValue() +40) % 100;
             numbers.add(cur);
         }
 
         for (int i = 0; i <= 11; i++)
         {
-            int cur = (int)uniformPosRandomNumber(100.0);
+            int cur = uniformPosRandomNumber(100.0).intValue();
             numbers.add(cur);
         }
-        numbers.add(0);
+       /* numbers.add(0);
         numbers.add(0);
         numbers.add(99);
-        numbers.add(99);
+        numbers.add(99);*/
         System.out.println(numbers.size());
         return numbers;
     }
@@ -77,36 +100,54 @@ public class Population
     {
         ArrayList<Double> alphas = new ArrayList<>();
         ArrayList<OrganismsLife> newPopulation = new ArrayList<>();
-        for (int i =0; i <= pairs.size() - 2; i = i +2) {
-            double curAlpha = 1-((pairs.get(i) + pairs.get(i + 1)) / 400.0);
+        for (int i =1; i <= pairs.size() - 1; i=i+1) {
+            int ipos1 = i-1;
+            int ipos2 = i;
+            double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / 400.0);
 
             if (curAlpha == 1)
             {
                 curAlpha = 0.99999999;
             }
 
-            System.out.println(i+ ". " + pairs.get(i) + " : " + pairs.get(i+1) +" Alpha = " + curAlpha);
+            //System.out.println(i+ ". " + pairs.get(i) + " : " + pairs.get(i+1) +" Alpha = " + curAlpha);
             alphas.add(curAlpha);
             OrganismsLife ParentA;
             OrganismsLife ParentB;
-            if (pairs.get(i) < pairs.get(i + 1))//We know that the organism at i is a better fit
+            if (pairs.get(ipos1) < pairs.get(ipos2))//We know that the organism at i is a better fit
             {
-                ParentA = population.get(pairs.get(i));
-                ParentB = population.get(pairs.get(i + 1));
+                ParentA = population.get(pairs.get(ipos1));
+                ParentB = population.get(pairs.get(ipos2));
             }
             else
             {
-                ParentA = population.get(pairs.get(i + 1));
-                ParentB = population.get(pairs.get(i));
+                ParentB = population.get(pairs.get(ipos1));
+                ParentA = population.get(pairs.get(ipos2));
             }
-            OrganismsLife childA = goodBreed(ParentA, ParentB, curAlpha, populationInput.get(0), i);
-            OrganismsLife childB = badBreed(ParentA, ParentB, curAlpha, populationInput.get(0), i);
+            OrganismsLife childA = goodBreed(ParentA, ParentB, curAlpha, populationInput.get(0), ipos1);
+            OrganismsLife childB = badBreed(ParentA, ParentB, curAlpha, populationInput.get(0), ipos1);
             newPopulation.add(childA);
             newPopulation.add(childB);
         }
+        OrganismsLife childClone = BreedNoMutation(population.get(0), population.get(0), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
+        childClone = BreedNoMutation(population.get(0), population.get(0), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
 
+        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
+        childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
 
-
+        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
+        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
+        newPopulation.add(childClone);
+        population.clear();
+        for (OrganismsLife cur : newPopulation)
+        {
+            population.add(cur);
+        }
     }
 
     public static OrganismsLife goodBreed(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
@@ -149,6 +190,27 @@ public class Population
         child2 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB2); // Make child which is slight variant of best traits of parents
         return child2;
     }
+    public static OrganismsLife BreedNoMutation(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
+    {
+        OrganismsLife child2;
+        Double[] childB2 = new Double[ParentA.creature.getBeta().length];
+        //TDistribution ttable = new TDistribution(ParentA.DoF);
+        for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)
+        {
+            int iSwitch = uniformPosRandomNumber(1.0).intValue();
+            if (iSwitch <= 0.5)
+            {
+                childB2[j] = ParentB.creature.getBeta()[j];
+            }
+            else
+            {
+                childB2[j] = ParentA.creature.getBeta()[j];
+            }
+        }
+        child2 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB2); // Make child which is slight variant of best traits of parents
+        return child2;
+    }
+
 
     /**
      * @param Range [0; Range]
@@ -188,10 +250,11 @@ public class Population
  * @param Range [0; Range]
  * @return  pseudorandom number from a Uniform Distribution within the range
      * */
-    public static double uniformPosRandomNumber(Double Range)
+    public static Double uniformPosRandomNumber(Double Range)
     {
         double dmax =  1.7320508071499143;
-        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(8));
+        Random r = new Random();
+        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(r.nextInt()));
         double cur = rnd.nextNormalizedDouble();
         cur = (cur/dmax) * Range;
         if (cur < 0)
