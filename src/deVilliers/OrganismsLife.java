@@ -39,7 +39,7 @@ public class OrganismsLife
     {
         creature = new OrganismA(lbl, initial);
         this.N = N;
-        DoF = (N*1.0) - creature.getBeta().length;
+        DoF = (N*1.0) - creature.getBeta().length*1.0;
         //System.out.println("Degrees of Freedom = " + DoF);
         standardErrorBeta = new Double[sqSSxx.length];
         tBetaTS = new Double[sqSSxx.length];
@@ -52,7 +52,7 @@ public class OrganismsLife
     {
         creature = new OrganismA(lbl, initial, beta);
         this.N = N;
-        DoF = (N*1.0) - creature.getBeta().length;
+        DoF = (N*1.0) - creature.getBeta().length*1.0;
         //System.out.println("Degrees of Freedom = " + DoF);
         standardErrorBeta = new Double[sqSSxx.length];
         tBetaTS = new Double[sqSSxx.length];
@@ -150,10 +150,19 @@ public class OrganismsLife
 
     public void popCalcP()
     {
-        TDistribution tTable = new TDistribution(DoF);
-        for (int i = 0; i <= tBetaTS.length - 1; i++)
+
+        if (DoF > 0) {
+            TDistribution tTable = new TDistribution(DoF);
+            for (int i = 0; i <= tBetaTS.length - 1; i++) {
+                pBeta[i] = 1.0 - tTable.cumulativeProbability(Math.abs(tBetaTS[i]));
+            }
+        }
+        else
         {
-            pBeta[i] = 1.0 - tTable.cumulativeProbability(Math.abs(tBetaTS[i]));
+            TDistribution tTable = new TDistribution(1792);
+            for (int i = 0; i <= tBetaTS.length - 1; i++) {
+                pBeta[i] = 1.0 - tTable.cumulativeProbability(Math.abs(tBetaTS[i]));
+            }
         }
     }
 

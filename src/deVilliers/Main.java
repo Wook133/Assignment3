@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Population model1 = new Population();
-        for (int i = 1; i <= 2; i ++) {
+        for (int i = 1; i <= 100; i ++) {
             model1.Evolve();
         }
         /*for (int i = 1; i < 100; i++) {

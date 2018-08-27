@@ -28,7 +28,6 @@ public class Population
     public Population() {
         readCSV rcsv = new readCSV();
         populationInput = rcsv.readfile("TrainingSet.csv");
-        System.out.println(populationInput.size());
         Long begin = System.currentTimeMillis();
         for (int i = 0; i < 100; i++)
         {
@@ -43,7 +42,7 @@ public class Population
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
-        System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "time = " + (end-begin) + " ms");
+        System.out.println("Size = " + population.size() + "\t" + "Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" +  "time = " + (end-begin) + " ms");
         /*System.out.println("Size = " + population.size());
         System.out.println("population size = " + population.size());
         System.out.println("Time = " + (end-begin) + " ms");
@@ -91,11 +90,6 @@ public class Population
             int cur = uniformPosRandomNumber(100.0).intValue();
             numbers.add(cur);
         }
-       /* numbers.add(0);
-        numbers.add(0);
-        numbers.add(99);
-        numbers.add(99);*/
-        System.out.println(numbers.size());
         return numbers;
     }
 
@@ -143,72 +137,87 @@ public class Population
         newPopulation.add(childClone);
         childClone = BreedNoMutation(population.get(population.size()-1), population.get(population.size()-1), 0.0, populationInput.get(0), newPopulation.size());
         newPopulation.add(childClone);
-        while (newPopulation.size() != 100)
+        while (newPopulation.size() < 100)
         {
             childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
             newPopulation.add(childClone);
         }
-        /*childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
-        newPopulation.add(childClone);
-        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
-        newPopulation.add(childClone);
-        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
-        newPopulation.add(childClone);
-        childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), 0.0, populationInput.get(0), newPopulation.size());
-        newPopulation.add(childClone);*/
         population.clear();
         for (OrganismsLife cur : newPopulation)
         {
             population.add(cur);
         }
-        System.out.println("Pop-Size = " + population.size());
     }
 
     public static OrganismsLife goodBreed(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
     {
         OrganismsLife child1;
         Double[] childB1 = new Double[ParentA.creature.getBeta().length];
-        TDistribution ttable = new TDistribution(ParentA.DoF);
-        for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)
-        {
-            if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j]))
-            {
-                childB1[j] = ParentA.creature.getBeta()[j]+ (normalRandomNumber(ttable.inverseCumulativeProbability(alpha))*ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
-                //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+        double dof = ParentA.DoF;
+        if (dof > 0) {
+            TDistribution ttable = new TDistribution(ParentA.DoF);
+            for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
+                if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
+                    childB1[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
+                    //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+                } else {
+                    childB1[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
+                }
             }
-            else
-            {
-                childB1[j] = ParentB.creature.getBeta()[j]+ (normalRandomNumber(ttable.inverseCumulativeProbability(alpha))*ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
-            }
+            child1 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB1); // Make child which is slight variant of best traits of parents
         }
-        child1 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB1); // Make child which is slight variant of best traits of parents
+        else
+        {
+            dof = 1792;
+            TDistribution ttable = new TDistribution(dof);
+            for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
+                if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
+                    childB1[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
+                    //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+                } else {
+                    childB1[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
+                }
+            }
+            child1 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB1); // Make child which is slight variant of best traits of parents
+        }
         return child1;
     }
     public static OrganismsLife badBreed(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
     {
         OrganismsLife child2;
+        double dof = ParentA.DoF;
         Double[] childB2 = new Double[ParentA.creature.getBeta().length];
-        TDistribution ttable = new TDistribution(ParentA.DoF);
-        for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)
-        {
-            if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j]))
-            {
-                childB2[j] = ParentB.creature.getBeta()[j]+ (normalRandomNumber(ttable.inverseCumulativeProbability(alpha))*ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
-                //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+        if (dof > 0) {
+            TDistribution ttable = new TDistribution(ParentA.DoF);
+            for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
+                if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
+                    childB2[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
+                    //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+                } else {
+                    childB2[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
+                }
             }
-            else
-            {
-                childB2[j] = ParentA.creature.getBeta()[j]+ (normalRandomNumber(ttable.inverseCumulativeProbability(alpha))*ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
-            }
+            child2 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB2); // Make child which is slight variant of best traits of parents
         }
-        child2 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB2); // Make child which is slight variant of best traits of parents
+        else
+        {
+            TDistribution ttable = new TDistribution(1792);
+            for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++) {
+                if (Math.abs(ParentA.tBetaTS[j]) > Math.abs(ParentB.tBetaTS[j])) {
+                    childB2[j] = ParentB.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentB.standardErrorBeta[j]);//Sample from Confidence Interval
+                    //System.out.println(ttable.inverseCumulativeProbability(curAlpha));
+                } else {
+                    childB2[j] = ParentA.creature.getBeta()[j] + (normalRandomNumber(ttable.inverseCumulativeProbability(alpha)) * ParentA.standardErrorBeta[j]);//Sample from Confidence Interval
+                }
+            }
+            child2 = new OrganismsLife(first, lbl, ParentA.DoF.intValue(), childB2); // Make child which is slight variant of best traits of parents
+        }
         return child2;
     }
     public static OrganismsLife BreedNoMutation(OrganismsLife ParentA, OrganismsLife ParentB, double alpha, input first, int lbl)
     {
         OrganismsLife child2;
         Double[] childB2 = new Double[ParentA.creature.getBeta().length];
-        //TDistribution ttable = new TDistribution(ParentA.DoF);
         for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)
         {
             int iSwitch = uniformPosRandomNumber(1.0).intValue();
