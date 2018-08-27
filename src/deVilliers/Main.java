@@ -16,10 +16,96 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Population model1 = new Population();
-        for (int i = 1; i <= 100; i ++) {
+
+        for (int i = 1; i <= 5000; i ++) {
             model1.Evolve();
         }
-        /*for (int i = 1; i < 100; i++) {
+
+    }
+
+    public static double calcP(double Tts, double dof)
+    {
+        TDistribution tTable = new TDistribution(dof);
+        return 1.0 - tTable.cumulativeProbability(Tts);
+    }
+
+    public static double tTestStatistic(double BetaI, double standardErrorBetaI)
+    {
+        return BetaI/standardErrorBetaI;
+    }
+
+    public static double StandardErrorB(double MSE, double SSXXi)
+    {
+        return ((Math.sqrt(MSE))/(SSXXi));
+    }
+
+    /**
+     * @param Range [-Range; Range]
+     * @return  pseudorandom number from a Uniform Distribution within the range
+     */
+    public static double uniformRandomNumber(Double Range)
+    {
+        double dmax =  1.7320508071499143;
+        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(8));
+        double cur = rnd.nextNormalizedDouble();
+        return (cur/dmax) * Range;
+    }
+    /**
+     * @param Range [0; Range]
+     * @return  pseudorandom number from a Uniform Distribution within the range
+     * */
+    public static double uniformPosRandomNumber(Double Range)
+    {
+        double dmax =  1.7320508071499143;
+        Random r = new Random();
+        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(r.nextInt()));
+        double cur = rnd.nextNormalizedDouble();
+        cur = (cur/dmax) * Range;
+        if (cur < 0)
+            cur = cur *-1.0;
+        return cur;
+    }
+    /**
+     * @param Range [0; Range]
+     * @return  pseudorandom number from a Normal Distribution within the range
+     */
+    public static Double normalRandomNumber(Double Range)
+    {
+        Random r = new Random();
+        double dmax =  5.539589635447753;
+
+        GaussianRandomGenerator rnd = new GaussianRandomGenerator(new Well19937c(r.nextInt()));
+        double cur = rnd.nextNormalizedDouble();
+        if (cur < 0)
+            cur = cur *-1.0;
+        cur = cur;
+        return (cur/dmax) * Range;
+    }
+
+    /**
+     * @param Range [0; Range]
+     * @return  pseudorandom number from a Uniform Distribution within the range
+     */
+    public static Integer normalRandomInteger(Double Range)
+    {
+        Random r = new Random();
+        double dmax =  5.539589635447753;
+
+        GaussianRandomGenerator rnd = new GaussianRandomGenerator(new Well19937c(r.nextInt()));
+        double cur = rnd.nextNormalizedDouble();
+        if (cur < 0)
+            cur = cur *-1.0;
+
+        cur = (cur/dmax) * Range;
+        cur = cur - 1;
+
+        Integer i = (int)cur;
+        return i;
+    }
+
+    public static void Comments()
+    {
+                /*for (int i = 1; i < 100; i++) {
             System.out.println(uniformPosRandomNumber(1.0));
         }*/
        /*TDistribution ttable = new TDistribution(1792);
@@ -122,87 +208,7 @@ public class Main {
         System.out.println(tTable.cumulativeProbability(t));
         System.out.println(tTable.cumulativeProbability(t)+tTable.cumulativeProbability(t));
         System.out.println(1.0 - tTable.cumulativeProbability(t));*/
-	// write your code here
-    }
-
-    public static double calcP(double Tts, double dof)
-    {
-        TDistribution tTable = new TDistribution(dof);
-        return 1.0 - tTable.cumulativeProbability(Tts);
-    }
-
-    public static double tTestStatistic(double BetaI, double standardErrorBetaI)
-    {
-        return BetaI/standardErrorBetaI;
-    }
-
-    public static double StandardErrorB(double MSE, double SSXXi)
-    {
-        return ((Math.sqrt(MSE))/(SSXXi));
-    }
-
-    /**
-     * @param Range [-Range; Range]
-     * @return  pseudorandom number from a Uniform Distribution within the range
-     */
-    public static double uniformRandomNumber(Double Range)
-    {
-        double dmax =  1.7320508071499143;
-        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(8));
-        double cur = rnd.nextNormalizedDouble();
-        return (cur/dmax) * Range;
-    }
-    /**
-     * @param Range [0; Range]
-     * @return  pseudorandom number from a Uniform Distribution within the range
-     * */
-    public static double uniformPosRandomNumber(Double Range)
-    {
-        double dmax =  1.7320508071499143;
-        Random r = new Random();
-        UniformRandomGenerator rnd = new UniformRandomGenerator(new Well19937c(r.nextInt()));
-        double cur = rnd.nextNormalizedDouble();
-        cur = (cur/dmax) * Range;
-        if (cur < 0)
-            cur = cur *-1.0;
-        return cur;
-    }
-    /**
-     * @param Range [0; Range]
-     * @return  pseudorandom number from a Normal Distribution within the range
-     */
-    public static Double normalRandomNumber(Double Range)
-    {
-        Random r = new Random();
-        double dmax =  5.539589635447753;
-
-        GaussianRandomGenerator rnd = new GaussianRandomGenerator(new Well19937c(r.nextInt()));
-        double cur = rnd.nextNormalizedDouble();
-        if (cur < 0)
-            cur = cur *-1.0;
-        cur = cur;
-        return (cur/dmax) * Range;
-    }
-
-    /**
-     * @param Range [0; Range]
-     * @return  pseudorandom number from a Uniform Distribution within the range
-     */
-    public static Integer normalRandomInteger(Double Range)
-    {
-        Random r = new Random();
-        double dmax =  5.539589635447753;
-
-        GaussianRandomGenerator rnd = new GaussianRandomGenerator(new Well19937c(r.nextInt()));
-        double cur = rnd.nextNormalizedDouble();
-        if (cur < 0)
-            cur = cur *-1.0;
-
-        cur = (cur/dmax) * Range;
-        cur = cur - 1;
-
-        Integer i = (int)cur;
-        return i;
+        // write your code here
     }
 
 }

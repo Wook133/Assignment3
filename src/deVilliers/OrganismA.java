@@ -42,7 +42,20 @@ public class OrganismA
         this.Label          = lbl;
         int ilength         = row.getX().length;
         X                   = new Double[ilength];
-        Beta                = bs;
+        Double[] temp = new Double[bs.length];
+        for (int i = 0; i <= bs.length - 1; i++) {
+            if (Double.isFinite(bs[i]))
+            {
+                temp[i] = bs[i];
+            }
+            else
+            {
+                temp[i] = uniformRandomNumber(2500.00);
+            }
+        }
+        Beta = temp;
+
+        //Beta                = bs;
     }
 
   /*  public OrganismA(input row) {
@@ -132,7 +145,7 @@ public class OrganismA
     {
         for (int j = 0; j <= Beta.length - 1; j++)
         {
-            System.out.println("p" + j + " = " + Beta[j]);
+            System.out.println("Beta" + j + " = " + Beta[j]);
         }
     }
 
