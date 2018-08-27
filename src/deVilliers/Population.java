@@ -102,7 +102,7 @@ public class Population
         for (int i = 1; i < pairs.size() - 1; i += 2) {
             int ipos1 = i-1;
             int ipos2 = i;
-            double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / 400.0);
+            double curAlpha = 1-((pairs.get(ipos1) + pairs.get(ipos2)) / 400.00);
 
             if (curAlpha == 1)
             {

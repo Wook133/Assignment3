@@ -22,7 +22,6 @@ public class Main {
         /*for (int i = 1; i < 100; i++) {
             System.out.println(uniformPosRandomNumber(1.0));
         }*/
-
        /*TDistribution ttable = new TDistribution(1792);
        System.out.println(ttable.inverseCumulativeProbability(0.505));
         System.out.println(ttable.inverseCumulativeProbability(0.99));*/
