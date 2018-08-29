@@ -15,10 +15,10 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        Population model1 = new Population(10000);
+        Population model1 = new Population(100);
         int igen = 1;
 
-        while (model1.population.get(0).rsquared < 0.99)
+        while ((model1.population.get(0).rsquared < 0.99) || (igen > 1500))
         {
             model1.Evolve();
             igen = igen + 1;
