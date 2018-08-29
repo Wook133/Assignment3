@@ -20,7 +20,10 @@ public class Main {
 
         while ((model1.population.get(0).rsquared < 0.99) || (igen > 1500))
         {
+            System.out.println("Generation: " + igen);
+            System.out.println("__________________________________________________________________________");
             model1.Evolve();
+            System.out.println("__________________________________________________________________________");
             igen = igen + 1;
         }
         System.out.println("Best after " + igen + " generations");
