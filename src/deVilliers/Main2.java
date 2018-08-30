@@ -5,8 +5,7 @@ public class Main2 {
         PopulationB model2 = new PopulationB(100);
         int igen2 = 1;
 
-        //while ((model2.population.get(0).rsquared < 0.99) && (igen2 < 1500))
-        while (igen2 < 10000)
+       while ((model2.population.get(0).rsquared < 0.99) && (igen2 < 1500))
         {
             System.out.println("Generation: " + igen2);
             System.out.println("__________________________________________________________________________");
