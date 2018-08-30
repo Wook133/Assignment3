@@ -7,7 +7,7 @@ import org.apache.commons.math3.random.Well19937c;
 
 import java.util.Random;
 
-public class OrganismA
+public class OrganismB
 {
     private Integer     Label;
     private Double[]    X;
@@ -20,15 +20,16 @@ public class OrganismA
      * Initialize
      * @param lbl
      */
-    public OrganismA(Integer lbl, input row)
+    public OrganismB(Integer lbl, input row)
     {
+        Double temp = 2500.0;
         this.Label          = lbl;
         int ilength         = row.getX().length;
         X                   = new Double[ilength];
-        Beta                = new Double[ilength];
+        Beta                = new Double[ilength+1];
         for (int i = 0; i <= Beta.length - 1; i++)
         {
-            Beta[i] = uniformRandomNumber(2500.0);
+            Beta[i] = uniformRandomNumber(temp);
         }
     }
 
@@ -38,7 +39,7 @@ public class OrganismA
      * @param row
      * @param bs
      */
-    public OrganismA(Integer lbl, input row, Double[] bs)
+    public OrganismB(Integer lbl, input row, Double[] bs)
     {
         this.Label          = lbl;
         int ilength         = row.getX().length;
@@ -59,11 +60,6 @@ public class OrganismA
         //Beta                = bs;
     }
 
-  /*  public OrganismA(input row) {
-
-        X = row.getX();
-        Y = row.getY();
-    }*/
 
     public void feed(input row)
     {
@@ -74,10 +70,11 @@ public class OrganismA
     public boolean live()
     {
         Yhat = 0.0;
-        for (int i = 0; i <= Beta.length - 1; i++)
+        for (int i = 0; i <= Beta.length - 2; i++)
         {
             Yhat = Yhat + (Beta[i]*X[i]);
         }
+        Yhat = Yhat + (Beta[Beta.length-1]);
         Double derror = Yhat - Y;
         errorSquared = Math.pow(derror, 2);
         //System.out.println(errorSquared);

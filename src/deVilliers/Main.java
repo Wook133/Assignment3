@@ -18,7 +18,8 @@ public class Main {
         Population model1 = new Population(100);
         int igen = 1;
 
-        while ((model1.population.get(0).rsquared < 0.99) || (igen > 1500))
+        //while ((model1.population.get(0).rsquared < 0.99) && (igen < 1500))
+        while (igen < 10000)
         {
             System.out.println("Generation: " + igen);
             System.out.println("__________________________________________________________________________");
@@ -28,6 +29,9 @@ public class Main {
         }
         System.out.println("Best after " + igen + " generations");
         model1.population.get(0).creature.printBeta();
+
+
+
 
 
     }
