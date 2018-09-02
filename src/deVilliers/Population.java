@@ -123,10 +123,16 @@ public class Population
         Collections.sort(population, new SortbyR());
         Collections.reverse(population);
         Long end = System.currentTimeMillis();
+        Double rsum = 0.0;
+        for (int i = 0; i <= population.size()-1; i++)
+        {
+            rsum = population.get(i).rsquared + rsum;
+        }
         System.out.println("Size = " + population.size());
         System.out.println("Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "\t" + "\t" + "SSE BEST = " + population.get(0).SSE);
         System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
         System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
+        System.out.println("AVG: " + "R^2 = " + rsum/(population.size()-1)*1.0);
         System.out.println("time = " + (end-begin) + " ms");
 
     }

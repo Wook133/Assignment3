@@ -1,18 +1,17 @@
 package deVilliers;
 
-
 import org.apache.commons.math3.distribution.TDistribution;
 
 import java.util.ArrayList;
 
-public class OrganismsLifeB
+public class OrganismsLife3
 {
     //public final double SSE = 607090.261855908;
     Double SSyy = 1266528222270.0;
     Double[] sqSSxx = {8526.0, 2159956.0, 54284.0, 5978404.0, 9366.0, 3273248.0, 410176.0};
 //-4.45E+12	-4.59E+12	-5260.865681	-90000084018	-4.1E+12	-67142.74884	-9.2E+11
 
-    OrganismB   creature;
+    Organism3   creature;
     Double[]    standardErrorBeta;
     Double[]    tBetaTS;
     Double[]    pBeta;
@@ -24,11 +23,11 @@ public class OrganismsLifeB
     Integer icount;
     Integer N;
 
-    public OrganismsLifeB(String sFileName, Integer lbl)
+    public OrganismsLife3(String sFileName, Integer lbl)
     {
         readCSV rcsv = new readCSV();
         food = rcsv.readfile("TrainingSet.csv");
-        creature = new OrganismB(lbl, food.get(0));
+        creature = new Organism3(lbl, food.get(0));
         DoF = (double)food.size() - creature.getBeta().length;
         //System.out.println("Degrees of Freedom = " + DoF);
         standardErrorBeta = new Double[sqSSxx.length];
@@ -37,9 +36,9 @@ public class OrganismsLifeB
         icount = 0;
     }
 
-    public OrganismsLifeB(input initial, Integer lbl, Integer N)
+    public OrganismsLife3(input initial, Integer lbl, Integer N)
     {
-        creature = new OrganismB(lbl, initial);
+        creature = new Organism3(lbl, initial);
         this.N = N;
         DoF = (N*1.0) - creature.getBeta().length*1.0;
         //System.out.println("Degrees of Freedom = " + DoF);
@@ -50,9 +49,9 @@ public class OrganismsLifeB
         SSE = 0.0;
     }
 
-    public OrganismsLifeB(input initial, Integer lbl, Integer N, Double[] beta)
+    public OrganismsLife3(input initial, Integer lbl, Integer N, Double[] beta, Double[] alpha)
     {
-        creature = new OrganismB(lbl, initial, beta);
+        creature = new Organism3(lbl, initial, beta, alpha);
         this.N = N;
         DoF = (N*1.0) - creature.getBeta().length*1.0;
         //System.out.println("Degrees of Freedom = " + DoF);
@@ -179,3 +178,4 @@ public class OrganismsLifeB
 
 
 }
+

@@ -1,20 +1,21 @@
 package deVilliers;
 
-public class Main2 {
+public class Main3 {
     public static void main(String[] args) throws Exception {
-        PopulationB model2 = new PopulationB(1000);
+        Population3 model3 = new Population3(1000);
         int igen2 = 1;
 
-       while ((model2.population.get(0).rsquared < 0.99) && (igen2 < 1500))
+        while ((model3.population.get(0).rsquared < 0.99) && (igen2 < 1500))
         {
             System.out.println("Generation: " + igen2);
             System.out.println("__________________________________________________________________________");
-            model2.Evolve();
+            model3.Evolve();
             System.out.println("__________________________________________________________________________");
             igen2 = igen2 + 1;
         }
         System.out.println("Best after " + igen2 + " generations");
-        model2.population.get(0).creature.printBeta();
+        model3.population.get(0).creature.printBeta();
+        model3.population.get(0).creature.printAlpha();
     }
 
 }
