@@ -22,7 +22,8 @@ public class Main {
         {
             System.out.println("Generation: " + igen);
             System.out.println("__________________________________________________________________________");
-            model1.Evolve();
+            //model1.Evolve();
+            model1.EvolveUniform();
             System.out.println("__________________________________________________________________________");
             igen = igen + 1;
         }

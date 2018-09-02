@@ -85,16 +85,67 @@ public class Population
     {
         ArrayList<Integer> numbers = new ArrayList<>();
         for (int i = 1; i <= (population.size()*0.8); i++) {
-            int cur = (normalRandomInteger(i * 3.0) + (i % 5) + uniformPosRandomNumber(100.0).intValue()+ uniformPosRandomNumber(50.0).intValue() +40) % 100;
+            int cur = (normalRandomInteger(i * 3.0) + (i % 5) + uniformPosRandomNumber(population.size()*1.0).intValue()+ uniformPosRandomNumber(population.size()/2.0).intValue() +40) % population.size();
             numbers.add(cur);
         }
 
         for (int i = 0; i <= (population.size()*0.11); i++)
         {
-            int cur = uniformPosRandomNumber(100.0).intValue();
+            int cur = uniformPosRandomNumber(population.size()*1.0).intValue();
             numbers.add(cur);
         }
         return numbers;
+    }
+
+    public ArrayList<Integer> BreedingUniformPairs()
+    {
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+
+        for (int i = 0; i <= (population.size()); i++)
+        {
+            int cur = uniformPosRandomNumber(population.size()*1.0).intValue();
+            numbers.add(cur);
+        }
+        return numbers;
+    }
+
+    public void EvolveUniform()
+    {
+        Long begin = System.currentTimeMillis();
+        uniformBreedingRandomCrossover(BreedingUniformPairs());
+        for (int i = 0; i < population.size(); i++) {
+            for (int j = 0; j < populationInput.size(); j++) {
+                OrganismsLife cur = population.get(i);
+                cur.Live(populationInput.get(j));
+            }
+        }
+        Collections.sort(population, new SortbyR());
+        Collections.reverse(population);
+        Long end = System.currentTimeMillis();
+        System.out.println("Size = " + population.size());
+        System.out.println("Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "\t" + "\t" + "SSE BEST = " + population.get(0).SSE);
+        System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
+        System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
+        System.out.println("time = " + (end-begin) + " ms");
+
+    }
+
+    public void uniformBreedingRandomCrossover(ArrayList<Integer> pairs)
+    {
+        ArrayList<Double> alphas = new ArrayList<>();
+        ArrayList<OrganismsLife> newPopulation = new ArrayList<>();
+        int n = populationInput.size();
+        while (newPopulation.size() < population.size())
+        {
+            OrganismsLife childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), populationInput.get(0), newPopulation.size(), n);
+            newPopulation.add(childClone);
+        }
+        population.clear();
+        for (OrganismsLife cur : newPopulation)
+        {
+            population.add(cur);
+        }
     }
 
     public void Breed(ArrayList<Integer> pairs)
