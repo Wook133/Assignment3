@@ -2,7 +2,7 @@ package deVilliers;
 
 public class Main2 {
     public static void main(String[] args) throws Exception {
-        PopulationB model2 = new PopulationB(1000);
+        PopulationB model2 = new PopulationB(10000);
         int igen2 = 1;
 
        while ((model2.population.get(0).rsquared < 0.99) && (igen2 < 1500))
