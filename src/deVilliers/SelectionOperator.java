@@ -27,7 +27,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);
@@ -62,7 +62,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);
@@ -85,7 +85,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);
@@ -105,7 +105,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);
@@ -129,7 +129,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);
@@ -149,7 +149,7 @@ public class SelectionOperator {
         {
             numbers.remove(numbers.size()-1);
         }
-        while (numbers.size() <= iSize)
+        while (numbers.size() < iSize)
         {
             int cur = uniformPosRandomNumber(iSize*1.0).intValue();
             numbers.add(cur);

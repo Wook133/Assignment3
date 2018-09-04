@@ -46,7 +46,7 @@ public class OrganismB
         X                   = new Double[ilength];
         Double[] temp = new Double[bs.length];
         for (int i = 0; i <= bs.length - 1; i++) {
-            if (Double.isFinite(bs[i]))
+            if (Double.isFinite(bs[i]) && (bs[i] != null))
             {
                 temp[i] = bs[i];
             }

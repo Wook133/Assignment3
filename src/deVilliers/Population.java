@@ -198,7 +198,7 @@ public class Population
                 }
                 else
                 {
-                    childB2[j] = ParentB.creature.getBeta()[j] + (ParentA.creature.getBeta()[j] * mutationmagnitute);
+                    childB2[j] = ParentB.creature.getBeta()[j];// + (ParentB.creature.getBeta()[j] * mutationmagnitute);
                 }
             }
             else
@@ -207,7 +207,7 @@ public class Population
                     childB2[j] = ParentA.creature.getBeta()[j] + (ParentB.creature.getBeta()[j] * mutationmagnitute);
                 }
                 else {
-                    childB2[j] = ParentA.creature.getBeta()[j] + (ParentB.creature.getBeta()[j] * mutationmagnitute);
+                    childB2[j] = ParentA.creature.getBeta()[j];// + (ParentA.creature.getBeta()[j] * mutationmagnitute);
 
                 }
             }
