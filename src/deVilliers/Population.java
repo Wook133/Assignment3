@@ -31,9 +31,46 @@ public class Population
     ArrayList<input> populationInput;
     ArrayList<OrganismsLife> population = new ArrayList<>();
 
-    public Population(int populationSize) {
+    String stoppingCondition;
+    String intializedValues;
+    String datasetSize;
+    String populationSize;
+    String crossoverRate;
+    String mutationRate;
+    String mutationMagnitude;
+    String selectionMethod;
+    String rSquared;
+    String Time;
+    String Generation;
+    String BetaParameters;
+    String model;
+    int igen;
+    double mutationrate;
+    double mutationmagnitute;
+    double crossoverrate;
+    int select;
+
+    public Population(int populationSize, String sc, double mutationrate, double mutationmagnitute, double crossoverrate, int select) {
         readCSV rcsv = new readCSV();
         populationInput = rcsv.readfile("TrainingSet.csv");
+
+        igen = 0;
+        datasetSize = String.valueOf(populationInput.size());
+        this.populationSize = String.valueOf(populationSize);
+        this.stoppingCondition = sc;
+        mutationRate = String.valueOf(mutationrate);
+        this.mutationrate=mutationrate;
+        this.mutationmagnitute=mutationmagnitute;
+        this.crossoverrate = crossoverrate;
+        this.select = select;
+        mutationMagnitude = String.valueOf(mutationmagnitute);
+        crossoverRate = String.valueOf(crossoverrate);
+        Generation = "0";
+        model = "1";
+        selectionMethod = String.valueOf(select);
+        BetaParameters = "0, 0, 0, 0, 0, 0, 0";
+        rSquared = "0";
+        intializedValues = "0";
         Long begin = System.currentTimeMillis();
         for (int i = 0; i < populationSize; i++)
         {
@@ -74,13 +111,18 @@ public class Population
         System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
         System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
         System.out.println("time = " + (end-begin) + " ms");
+        Time =String.valueOf(end-begin);
+        rSquared = String.valueOf(population.get(0).rsquared*100.0);
+        igen = igen +1;
+        Generation = String.valueOf(igen);
+        BetaParameters = population.get(0).creature.getStringBeta();
 
     }
     public void Evolve2()
     {
         Long begin = System.currentTimeMillis();
         SelectionOperator sso = new SelectionOperator();
-        Breed(sso.NormalSelection0(population.size()), 0.001, 0.001, 0.5);
+        Breed(sso.NormalSelection0(population.size()), mutationrate, mutationmagnitute,crossoverrate);
         for (int i = 0; i < population.size(); i++) {
             for (int j = 0; j < populationInput.size(); j++) {
                 OrganismsLife cur = population.get(i);
@@ -95,6 +137,11 @@ public class Population
         System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
         System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
         System.out.println("time = " + (end-begin) + " ms");
+        Time =String.valueOf(end-begin);
+        rSquared = String.valueOf(population.get(0).rsquared*100.0);
+        igen = igen +1;
+        Generation = String.valueOf(igen);
+        BetaParameters = population.get(0).creature.getStringBeta();
 
     }
     /**

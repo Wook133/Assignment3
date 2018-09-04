@@ -13,8 +13,9 @@ public class Experiment {
     String Generation;
     String BetaParameters;
     String model;
+    String mutationMagnitude;
 
-    public Experiment(String model, String stoppingCondition, String intializedValues, String datasetSize, String populationSize, String mutationRate, String selectionMethod, String crossoverRate, String rSquared, String time, String iterations, String betaParameters) {
+    public Experiment(String model, String stoppingCondition, String intializedValues, String datasetSize, String populationSize, String mutationRate, String selectionMethod, String crossoverRate, String rSquared, String time, String iterations, String betaParameters, String mm) {
         this.stoppingCondition = stoppingCondition;
         this.intializedValues = intializedValues;
         this.datasetSize = datasetSize;
@@ -27,6 +28,7 @@ public class Experiment {
         Generation = iterations;
         BetaParameters = betaParameters;
         this.model=model;
+        this.mutationMagnitude =mm;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class Experiment {
                 ", datasetSize='" + datasetSize + '\'' +
                 ", populationSize='" + populationSize + '\'' +
                 ", mutationRate='" + mutationRate + '\'' +
+                ", mutationMagnitude='" + mutationMagnitude + '\'' +
                 ", selectionMethod='" + selectionMethod + '\'' +
                 ", crossoverRate='" + crossoverRate + '\'' +
                 ", rSquared='" + rSquared + '\'' +
@@ -50,7 +53,7 @@ public class Experiment {
 
     public String print()
     {
-        String sOut = model + ", " + stoppingCondition + ", " + intializedValues + ", " + datasetSize + ", " + populationSize + ", " + mutationRate + ", " + selectionMethod + ", " + crossoverRate + ", " + rSquared + ", " + Time + ", " + Generation + ", " + BetaParameters ;
+        String sOut = model + ", " + stoppingCondition + ", " + intializedValues + ", " + datasetSize + ", " + populationSize + ", " + mutationRate + ", " + mutationMagnitude + ", " + selectionMethod + ", " + crossoverRate + ", " + rSquared + ", " + Time + ", " + Generation + ", " + BetaParameters ;
         return sOut;
     }
 }
