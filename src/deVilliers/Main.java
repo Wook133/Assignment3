@@ -15,14 +15,14 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        Population model1 = new Population(10000);
+        Population model1 = new Population(1000);
         int igen = 1;
 
         while ((model1.population.get(0).rsquared < 0.99) && (igen < 1500))
         {
             System.out.println("Generation: " + igen);
             System.out.println("__________________________________________________________________________");
-            model1.Evolve();
+            model1.Evolve2();
             System.out.println("__________________________________________________________________________");
             igen = igen + 1;
         }

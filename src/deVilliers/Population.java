@@ -76,7 +76,27 @@ public class Population
         System.out.println("time = " + (end-begin) + " ms");
 
     }
+    public void Evolve2()
+    {
+        Long begin = System.currentTimeMillis();
+        SelectionOperator sso = new SelectionOperator();
+        Breed(sso.NormalSelection0(population.size()), 0.001, 0.001, 0.5);
+        for (int i = 0; i < population.size(); i++) {
+            for (int j = 0; j < populationInput.size(); j++) {
+                OrganismsLife cur = population.get(i);
+                cur.Live(populationInput.get(j));
+            }
+        }
+        Collections.sort(population, new SortbyR());
+        Collections.reverse(population);
+        Long end = System.currentTimeMillis();
+        System.out.println("Size = " + population.size());
+        System.out.println("Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "\t" + "\t" + "SSE BEST = " + population.get(0).SSE);
+        System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
+        System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
+        System.out.println("time = " + (end-begin) + " ms");
 
+    }
     /**
      * Select
      * @return
@@ -137,6 +157,66 @@ public class Population
 
     }
 
+    public void Breed(ArrayList<Integer> pairs, double mutationrate, double mutationmagnitute, double crossoverrate)
+    {
+        ArrayList<Double> alphas = new ArrayList<>();
+        ArrayList<OrganismsLife> newPopulation = new ArrayList<>();
+        int n = populationInput.size();
+        for (int i = 1; i < pairs.size() - 1; i += 2) {
+            OrganismsLife ParentA = population.get(pairs.get(i-1));
+            OrganismsLife ParentB = population.get(pairs.get(i));
+            int ipos = i-1;
+            OrganismsLife Child1  = BreedMutation(ParentA, ParentB, populationInput.get(0), ipos, n, mutationrate, mutationmagnitute, crossoverrate);
+            OrganismsLife Child2  = BreedMutation(ParentA, ParentB, populationInput.get(0), i, n, mutationrate, mutationmagnitute, crossoverrate);
+            newPopulation.add(Child1);
+            newPopulation.add(Child2);
+        }
+        while (newPopulation.size() < population.size())
+        {
+            OrganismsLife childClone = BreedNoMutation(population.get(0), new OrganismsLife(populationInput.get(0), newPopulation.size(), population.get(0).DoF.intValue()), populationInput.get(0), newPopulation.size(), n);
+            newPopulation.add(childClone);
+        }
+        population.clear();
+        for (OrganismsLife cur : newPopulation)
+        {
+            population.add(cur);
+        }
+    }
+
+    public static OrganismsLife BreedMutation(OrganismsLife ParentA, OrganismsLife ParentB, input first, int lbl, int n, double mutationrate, double mutationmagnitute, double crossoverrate)
+    {
+        OrganismsLife child2;
+        Double[] childB2 = new Double[ParentA.creature.getBeta().length];
+        for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)
+        {
+            double dSwitch = uniformPosRandomNumber(1.0);
+            double dmutate = uniformPosRandomNumber(1.0);
+            if (dSwitch <= crossoverrate)
+            {
+                if (dmutate <= mutationrate) {
+                    childB2[j] = ParentB.creature.getBeta()[j] + (ParentA.creature.getBeta()[j] * mutationmagnitute);
+                }
+                else
+                {
+                    childB2[j] = ParentB.creature.getBeta()[j] + (ParentA.creature.getBeta()[j] * mutationmagnitute);
+                }
+            }
+            else
+            {
+                if (dmutate <= mutationrate) {
+                    childB2[j] = ParentA.creature.getBeta()[j] + (ParentB.creature.getBeta()[j] * mutationmagnitute);
+                }
+                else {
+                    childB2[j] = ParentA.creature.getBeta()[j] + (ParentB.creature.getBeta()[j] * mutationmagnitute);
+
+                }
+            }
+        }
+        child2 = new OrganismsLife(first, lbl, n, childB2); // Make child which is slight variant of best traits of parents
+        return child2;
+    }
+
+
     public void uniformBreedingRandomCrossover(ArrayList<Integer> pairs)
     {
         ArrayList<Double> alphas = new ArrayList<>();
@@ -153,6 +233,7 @@ public class Population
             population.add(cur);
         }
     }
+
 
     public void Breed(ArrayList<Integer> pairs)
     {
