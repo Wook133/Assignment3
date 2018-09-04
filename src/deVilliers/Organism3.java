@@ -103,6 +103,7 @@ public class Organism3
         errorSquared = Math.pow(derror, 2);
         //System.out.println(errorSquared);
 
+
         return true;
     }
 

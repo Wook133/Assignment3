@@ -58,6 +58,7 @@ public class OrganismsLife3
         standardErrorBeta = new Double[sqSSxx.length];
         tBetaTS = new Double[sqSSxx.length];
         pBeta = new Double[sqSSxx.length];
+
         icount = 0;
         SSE = 0.00;
     }

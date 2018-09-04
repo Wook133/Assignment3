@@ -12,6 +12,7 @@ public class Main3 {
             model3.Evolve();
             System.out.println("__________________________________________________________________________");
             igen2 = igen2 + 1;
+
         }
         System.out.println("Best after " + igen2 + " generations");
         model3.population.get(0).creature.printBeta();
