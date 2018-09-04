@@ -12,8 +12,9 @@ public class Experiment {
     String Time;
     String Generation;
     String BetaParameters;
+    String model;
 
-    public Experiment(String stoppingCondition, String intializedValues, String datasetSize, String populationSize, String mutationRate, String selectionMethod, String crossoverRate, String rSquared, String time, String iterations, String betaParameters) {
+    public Experiment(String model, String stoppingCondition, String intializedValues, String datasetSize, String populationSize, String mutationRate, String selectionMethod, String crossoverRate, String rSquared, String time, String iterations, String betaParameters) {
         this.stoppingCondition = stoppingCondition;
         this.intializedValues = intializedValues;
         this.datasetSize = datasetSize;
@@ -25,11 +26,13 @@ public class Experiment {
         Time = time;
         Generation = iterations;
         BetaParameters = betaParameters;
+        this.model=model;
     }
 
     @Override
     public String toString() {
         return "Experiment{" +
+                "model='" + model + '\'' +
                 "stoppingCondition='" + stoppingCondition + '\'' +
                 ", intializedValues='" + intializedValues + '\'' +
                 ", datasetSize='" + datasetSize + '\'' +
@@ -47,7 +50,7 @@ public class Experiment {
 
     public String print()
     {
-        String sOut = stoppingCondition + ", " + intializedValues + ", " + datasetSize + ", " + populationSize + ", " + mutationRate + ", " + selectionMethod + ", " + crossoverRate + ", " + rSquared + ", " + Time + ", " + Generation + ", " + BetaParameters ;
+        String sOut = model + ", " + stoppingCondition + ", " + intializedValues + ", " + datasetSize + ", " + populationSize + ", " + mutationRate + ", " + selectionMethod + ", " + crossoverRate + ", " + rSquared + ", " + Time + ", " + Generation + ", " + BetaParameters ;
         return sOut;
     }
 }
