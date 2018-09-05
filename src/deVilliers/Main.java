@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Best after " + igen + " generations");
         model1.population.get(0).creature.printBeta();
 
-
+        System.out.println(model1.toString());
 
 
 

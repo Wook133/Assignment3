@@ -188,12 +188,33 @@ public class Organism3
             System.out.println("Beta" + j + " = " + Beta[j]);
         }
     }
+
+    public String getStringBeta()
+    {
+        String s = "";
+        for (int j = 0; j <= Beta.length - 1; j++)
+        {
+            s = s +", " + Beta[j];
+        }
+        return s;
+    }
+
     public void printAlpha()
     {
         for (int j = 0; j <= Alpha.length - 1; j++)
         {
             System.out.println("Alpha" + j + " = " + Alpha[j]);
         }
+    }
+
+    public String getStringAlpha()
+    {
+        String s = "";
+        for (int j = 0; j <= Alpha.length - 1; j++)
+        {
+            s = s +", " + Alpha[j];
+        }
+        return s;
     }
 }
 

@@ -482,9 +482,28 @@ public class Population
         return cur;
     }
 
+    @Override
+    public String toString() {
+        return "Population{" +
+                "intializedValues='" + intializedValues + '\'' +
+                ", datasetSize='" + datasetSize + '\'' +
+                ", populationSize='" + populationSize + '\'' +
+                ", crossoverRate='" + crossoverRate + '\'' +
+                ", mutationRate='" + mutationRate + '\'' +
+                ", selectionMethod='" + selectionMethod + '\'' +
+                ", rSquared='" + rSquared + '\'' +
+                ", Time='" + Time + '\'' +
+                ", Generation='" + Generation + '\'' +
+                ", BetaParameters='" + BetaParameters + '\'' +
+                ", model='" + model + '\'' +
+                ", igen=" + igen +
+                ", mutationrate=" + mutationrate +
+                ", mutationmagnitute=" + mutationmagnitute +
+                ", crossoverrate=" + crossoverrate +
+                '}';
+    }
 
-
-    /** Double[] childB1 = new Double[ParentA.creature.getBeta().length];
+/** Double[] childB1 = new Double[ParentA.creature.getBeta().length];
      Double[] childB2 = new Double[ParentA.creature.getBeta().length];
      TDistribution ttable = new TDistribution(ParentA.DoF);
      for (int j = 0; j <= ParentA.tBetaTS.length - 1; j++)

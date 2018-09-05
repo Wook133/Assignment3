@@ -146,6 +146,15 @@ public class OrganismB
             System.out.println("Beta" + j + " = " + Beta[j]);
         }
     }
+    public String getStringBeta()
+    {
+        String s = "";
+        for (int j = 0; j <= Beta.length - 1; j++)
+        {
+            s = s +", " + Beta[j];
+        }
+        return s;
+    }
 
 }
 
