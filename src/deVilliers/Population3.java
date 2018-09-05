@@ -38,6 +38,7 @@ public class Population3 {
     String mutationMagnitude;
     String selectionMethod;
     String rSquared;
+    String rSquaredAVG;
     String Time;
     String Generation;
     String BetaParameters;
@@ -122,13 +123,14 @@ public class Population3 {
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
         AlphaParameters = population.get(0).creature.getStringAlpha();
+        rSquaredAVG = String.valueOf(rsum/(population.size()-1)*1.0);
     }
 
     public void Evolve2()
     {
         Long begin = System.currentTimeMillis();
         SelectionOperator sso = new SelectionOperator();
-        Breed(sso.NormalSelection0(population.size()), 0.001, 0.001, 0.5);
+        Breed(sso.select(population.size(), select), mutationrate, mutationmagnitute,crossoverrate);
         for (int i = 0; i < population.size(); i++) {
             for (int j = 0; j < populationInput.size(); j++) {
                 OrganismsLife3 cur = population.get(i);
@@ -156,6 +158,7 @@ public class Population3 {
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
         AlphaParameters = population.get(0).creature.getStringAlpha();
+        rSquaredAVG = String.valueOf(rsum/(population.size()-1)*1.0);
 
     }
 
@@ -616,14 +619,15 @@ public class Population3 {
                  mutationRate + ", "
         + selectionMethod + ", "
         + rSquared + ", "
+                + rSquaredAVG + ", "
+                + population.get(0).SSE + ", "
         + Time + ", "
         + Generation + ", "
         + BetaParameters + ", "
         + AlphaParameters + ", "
         + model + ", "
         + igen + ", "
-                + mutationrate + ", "
-                + mutationmagnitute + ", "
+        + mutationmagnitute + ", "
         +crossoverrate;
     }
 }

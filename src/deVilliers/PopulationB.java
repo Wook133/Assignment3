@@ -24,6 +24,7 @@ public class PopulationB {
     String mutationMagnitude;
     String selectionMethod;
     String rSquared;
+    String rSquaredAVG;
     String Time;
     String Generation;
     String BetaParameters;
@@ -106,18 +107,24 @@ public class PopulationB {
         igen = igen +1;
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
+        rSquaredAVG = String.valueOf(rsum/(population.size()-1)*1.0);
     }
 
     public void Evolve2()
     {
         Long begin = System.currentTimeMillis();
         SelectionOperator sso = new SelectionOperator();
-        Breed(sso.NormalSelection0(population.size()), 0.001, 0.001, 0.5);
+        Breed(sso.select(population.size(), select), mutationrate, mutationmagnitute,crossoverrate);
         for (int i = 0; i < population.size(); i++) {
             for (int j = 0; j < populationInput.size(); j++) {
                 OrganismsLifeB cur = population.get(i);
                 cur.Live(populationInput.get(j));
             }
+        }
+        Double rsum = 0.0;
+        for (int i = 0; i <= population.size()-1; i++)
+        {
+            rsum = population.get(i).rsquared + rsum;
         }
         Collections.sort(population, new sorter());
         Collections.reverse(population);
@@ -126,12 +133,14 @@ public class PopulationB {
         System.out.println("Best: " + "R^2 = " + population.get(0).rsquared*100.0 + "\t" + "\t" + "\t" + "SSE BEST = " + population.get(0).SSE);
         System.out.println("Middle: " + "R^2 = " + population.get((population.size()/2)).rsquared*100.0 + "\t" + "\t"  + "SSE Middle = " + population.get((population.size()/2)).SSE);
         System.out.println("Worst: " + "R^2 = " + population.get(population.size()-1).rsquared*100.0 + "\t" + "\t" +  "SSE Worst = " + population.get(population.size()-1).SSE);
+        System.out.println("AVG: " + "R^2 = " + rsum/(population.size()-1)*1.0);
         System.out.println("time = " + (end-begin) + " ms");
         Time =String.valueOf(end-begin);
         rSquared = String.valueOf(population.get(0).rsquared*100.0);
         igen = igen +1;
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
+        rSquaredAVG = String.valueOf(rsum/(population.size()-1)*1.0);
 
     }
 
@@ -570,13 +579,14 @@ public class PopulationB {
                 mutationRate + ", "
                 + selectionMethod + ", "
                 + rSquared + ", "
+                + rSquaredAVG + ", "
+                + population.get(0).SSE + ", "
                 + Time + ", "
                 + Generation + ", "
                 + BetaParameters + ", "
                 + "1" + ", "
                 + model + ", "
                 + igen + ", "
-                + mutationrate + ", "
                 + mutationmagnitute + ", "
                 +crossoverrate;
     }

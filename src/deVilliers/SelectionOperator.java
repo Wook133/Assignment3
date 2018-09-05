@@ -24,22 +24,22 @@ public class SelectionOperator {
                 numbers = mySelection2(iSize);
             }
             break;
-            case 2:
+           /* case 2:
             {
                 numbers = NormalSelectionHalf(iSize);
             }
-            break;
-            case 3:
+            break;*/
+            case 2:
             {
                 numbers = NormalSelection0(iSize);
             }
             break;
-            case 4:
+            case 3:
             {
                 numbers = UniformPairsWeightedFront(iSize);
             }
             break;
-            case 5:
+            case 4:
             {
                 numbers = UniformPairs(iSize);
             }
