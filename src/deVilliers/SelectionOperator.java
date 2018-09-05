@@ -9,6 +9,50 @@ import java.util.Random;
 
 public class SelectionOperator {
 
+    public ArrayList<Integer> select(int iSize, int iSelector)
+    {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        switch (iSelector)
+        {
+            case 0:
+            {
+                numbers = mySelection1(iSize);
+            }
+            break;
+            case 1:
+            {
+                numbers = mySelection2(iSize);
+            }
+            break;
+            case 2:
+            {
+                numbers = NormalSelectionHalf(iSize);
+            }
+            break;
+            case 3:
+            {
+                numbers = NormalSelection0(iSize);
+            }
+            break;
+            case 4:
+            {
+                numbers = UniformPairsWeightedFront(iSize);
+            }
+            break;
+            case 5:
+            {
+                numbers = UniformPairs(iSize);
+            }
+            break;
+            default:
+            {
+                numbers = NormalSelection0(iSize);
+            }
+            break;
+        }
+        return numbers;
+    }
+
 
     public ArrayList<Integer> mySelection1(int iSize)
     {

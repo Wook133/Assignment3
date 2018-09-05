@@ -541,4 +541,44 @@ public class PopulationB {
         cur = (cur / dmax) * Range;
         return cur;
     }
+
+    @Override
+    public String toString() {
+        return "Population{" +
+                "intializedValues='" + intializedValues + '\'' +
+                ", datasetSize='" + datasetSize + '\'' +
+                ", populationSize='" + populationSize + '\'' +
+                ", crossoverRate='" + crossoverRate + '\'' +
+                ", mutationRate='" + mutationRate + '\'' +
+                ", selectionMethod='" + selectionMethod + '\'' +
+                ", rSquared='" + rSquared + '\'' +
+                ", Time='" + Time + '\'' +
+                ", Generation='" + Generation + '\'' +
+                ", BetaParameters='" + BetaParameters + '\'' +
+                ", model='" + model + '\'' +
+                ", igen=" + igen +
+                ", mutationrate=" + mutationrate +
+                ", mutationmagnitute=" + mutationmagnitute +
+                ", crossoverrate=" + crossoverrate +
+                '}';
+    }
+    public String toPrintString() {
+        return intializedValues + ", "
+                + datasetSize + ", "
+                + populationSize.toString() + ", "
+                + crossoverRate + ", " +
+                mutationRate + ", "
+                + selectionMethod + ", "
+                + rSquared + ", "
+                + Time + ", "
+                + Generation + ", "
+                + BetaParameters + ", "
+                + "1" + ", "
+                + model + ", "
+                + igen + ", "
+                + mutationrate + ", "
+                + mutationmagnitute + ", "
+                +crossoverrate;
+    }
+
 }

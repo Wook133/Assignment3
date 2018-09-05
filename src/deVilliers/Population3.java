@@ -41,6 +41,7 @@ public class Population3 {
     String Time;
     String Generation;
     String BetaParameters;
+    String AlphaParameters;
     String model;
     int igen;
     double mutationrate;
@@ -120,6 +121,7 @@ public class Population3 {
         igen = igen +1;
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
+        AlphaParameters = population.get(0).creature.getStringAlpha();
     }
 
     public void Evolve2()
@@ -153,6 +155,7 @@ public class Population3 {
         igen = igen +1;
         Generation = String.valueOf(igen);
         BetaParameters = population.get(0).creature.getStringBeta();
+        AlphaParameters = population.get(0).creature.getStringAlpha();
 
     }
 
@@ -580,5 +583,47 @@ public class Population3 {
         double cur = rnd.nextNormalizedDouble();
         cur = (cur / dmax) * Range;
         return cur;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Population{" +
+                "intializedValues='" + intializedValues + '\'' +
+                ", datasetSize='" + datasetSize + '\'' +
+                ", populationSize='" + populationSize + '\'' +
+                ", crossoverRate='" + crossoverRate + '\'' +
+                ", mutationRate='" + mutationRate + '\'' +
+                ", selectionMethod='" + selectionMethod + '\'' +
+                ", rSquared='" + rSquared + '\'' +
+                ", Time='" + Time + '\'' +
+                ", Generation='" + Generation + '\'' +
+                ", BetaParameters='" + BetaParameters + '\'' +
+                ", AlphaParameters='" + AlphaParameters + '\'' +
+                ", model='" + model + '\'' +
+                ", igen=" + igen +
+                ", mutationrate=" + mutationrate +
+                ", mutationmagnitute=" + mutationmagnitute +
+                ", crossoverrate=" + crossoverrate +
+                '}';
+    }
+
+    public String toPrintString() {
+        return intializedValues + ", "
+                + datasetSize + ", "
+                + populationSize.toString() + ", "
+                + crossoverRate + ", " +
+                 mutationRate + ", "
+        + selectionMethod + ", "
+        + rSquared + ", "
+        + Time + ", "
+        + Generation + ", "
+        + BetaParameters + ", "
+        + AlphaParameters + ", "
+        + model + ", "
+        + igen + ", "
+                + mutationrate + ", "
+                + mutationmagnitute + ", "
+        +crossoverrate;
     }
 }

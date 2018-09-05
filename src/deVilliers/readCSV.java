@@ -69,5 +69,20 @@ public class readCSV {
             System.out.println(e);
         }
     }
+    public static void writeCsvFile(String fileName, String s) throws IOException {
+        FileWriter fileWriter = null;
+        try
+        {
+            fileWriter = new FileWriter(fileName, true);
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            fileWriter.append(s);
+            fileWriter.flush();
+            fileWriter.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
 
 }

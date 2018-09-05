@@ -503,6 +503,25 @@ public class Population
                 '}';
     }
 
+    public String toPrintString() {
+        return intializedValues + ", "
+                + datasetSize + ", "
+                + populationSize.toString() + ", "
+                + crossoverRate + ", " +
+                mutationRate + ", "
+                + selectionMethod + ", "
+                + rSquared + ", "
+                + Time + ", "
+                + Generation + ", "
+                + BetaParameters + ", "
+                + 0 + ", "
+                + model + ", "
+                + igen + ", "
+                + mutationrate + ", "
+                + mutationmagnitute + ", "
+                +crossoverrate;
+    }
+
 /** Double[] childB1 = new Double[ParentA.creature.getBeta().length];
      Double[] childB2 = new Double[ParentA.creature.getBeta().length];
      TDistribution ttable = new TDistribution(ParentA.DoF);
